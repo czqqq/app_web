@@ -1,101 +1,167 @@
 ﻿<!DOCTYPE HTML>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit|ie-comp|ie-stand">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="lib/html5shiv.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]-->
-<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
-<link rel="stylesheet" href="lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
-<title>产品分类</title>
-</head>
-<body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品管理 <span class="c-gray en">&gt;</span> 产品分类 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<table class="table">
-	<tr>
-		<td width="200" class="va-t"><ul id="treeDemo" class="ztree"></ul></td>
-		<td class="va-t"><iframe ID="testIframe" Name="testIframe" FRAMEBORDER=0 SCROLLING=AUTO width=100%  height=390px SRC="product-category-add.html"></iframe></td>
-	</tr>
-</table>
-<!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
-<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
-<!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
-<script type="text/javascript">
-var setting = {
-	view: {
-		dblClickExpand: false,
-		showLine: false,
-		selectedMulti: false
-	},
-	data: {
-		simpleData: {
-			enable:true,
-			idKey: "id",
-			pIdKey: "pId",
-			rootPId: ""
-		}
-	},
-	callback: {
-		beforeClick: function(treeId, treeNode) {
-			var zTree = $.fn.zTree.getZTreeObj("tree");
-			if (treeNode.isParent) {
-				zTree.expandNode(treeNode);
-				return false;
-			} else {
-				demoIframe.attr("src",treeNode.file + ".html");
-				return true;
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--[if lt IE 9]>
+	<script type="text/javascript" src="lib/html5shiv.js"></script>
+	<script type="text/javascript" src="lib/respond.min.js"></script>
+	<![endif]-->
+		<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+		<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+		<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+		<!--[if IE 6]>
+	<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+		<title>分类管理</title>
+	</head>
+
+	<body>
+		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品管理 <span class="c-gray en">&gt;</span> 产品分类管理
+			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<div class="page-container">
+			<div class="text-c">
+				<form class="Huiform" method="post" action="" target="_self">
+					<input type="text" placeholder="分类名称" value="" name="name" id="name" class="input-text" style="width:120px">
+					</span><button type="button" class="btn btn-success" id="saveBtn" name="saveBtn" ><i class="Hui-iconfont">&#xe600;</i> 添加</button>
+				</form>
+			</div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-bg table-sort">
+					<thead>
+						<tr class="text-c">
+							<th width="25"><input type="checkbox" name="" value=""></th>
+							<th width="120">分类名称</th>
+							<th width="100">操作</th>
+						</tr>
+					</thead>
+					<tbody >
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!--_footer 作为公共模版分离出去-->
+		<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+		<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+		<!--/_footer 作为公共模版分离出去-->
+
+		<!--请在下方写此页面业务相关的脚本-->
+		<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+		<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				initTable();
+				initMethod();
+			});
+			var initTable = function(){
+				$('.table-sort').dataTable({
+					"ajax":{
+						"url": "/api/fetchProductType",
+						"type": "POST",
+                        //用于处理服务器端返回的数据。 dataSrc是DataTable特有的
+                        dataSrc: function (response) {
+                            if (response.code == 200) {
+                                return response.data.productTypes;
+                            }
+                        }
+					},
+                    pageLength:20,
+                    "columns": [
+                        {
+                            "data": "idColumn",
+							"render": function (data, type, row, meta) {
+                            return '<input name="id" style="text-align: center" type="checkbox" value="'+row.id+'">'
+							},
+						},
+						{ "data": "name" },
+                        { "data": "op",
+                            "render": function (data, type, row, meta) {
+                                return '<a style="text-decoration:none" ' +
+									'onClick="product_category_edit('+row.id+')" href="javascript:;" title="编辑">' +
+								'<i class="Hui-iconfont">&#xe6df;</i></a> ' +
+								'<a style="text-decoration:none" class="ml-5" onClick="active_del('+row.id+')" href="javascript:;" title="删除">' +
+								'<i class="Hui-iconfont">&#xe6e2;</i>' +
+								'</a>'
+                            }
+                        }
+                    ],
+					"aaSorting": [
+						[1, "desc"]
+					], //默认第几个排序
+					"bStateSave": true, //状态保存
+					"aoColumnDefs": [
+						//{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+						{
+							"orderable": false,
+							"aTargets": [0, 2]
+						} // 制定列不参与排序
+					],
+                    // 每一行创建完调用的函数
+                    "createdRow": function (row, data, dataIndex) {
+                        // row : tr dom
+                        // data: row data
+                        // dataIndex:row data's index
+                       row.classList.add("text-c")
+                    },
+				});
 			}
-		}
-	}
-};
+			var initMethod = function(){
+				$("#saveBtn").bind("click",function(){
+					var data = {};
+					data.name = $("#name").val();
+					if(data.name==""){
+						layer.msg('请输入分类名称!', {icon: 2,time:2000});
+						return;
+					};
+					$.ajax('/api/addProductType', {
+						method: 'POST',
+						data: {
+							productType:JSON.stringify(data)	
+						},
+						dataType: 'json'
+					}).done(function(response) {
+						if(response.code == 200) {
+							layer.msg("添加产品分类成功！" , {icon : 1, time : 2000});
+							//刷新页面
+                            var index = parent.layer.getFrameIndex(window.name);
+							location.replace(location.href);
+						} else {
+							layer.msg(response.message, {icon: 2,time:2000});
+						}
+					});
+				})
+			}
+			
+			var product_category_edit = function(id) {
+				layer_show("编辑产品类别","product-category-add.html?id="+id,50,100);
+			}
+			var active_del = function(id) {
+				$.ajax('/api/removeProductType', {
+					method: 'POST',
+					data: {"productTypeId":id},
+					dataType: 'json'
+				}).done(function(response) {
+					if(response.code == 200) {
+						layer.msg("删除成功！" , {icon : 1, time : 2000});
+							//刷新页面
+							location.replace(location.href);
+					} else {
+						layer.msg(response.message, {icon: 2,time:2000});
+					}
+				});
+			}
+		</script>
+	</body>
 
-var zNodes =[
-	{ id:1, pId:0, name:"一级分类", open:true},
-	{ id:11, pId:1, name:"二级分类"},
-	{ id:111, pId:11, name:"三级分类"},
-	{ id:112, pId:11, name:"三级分类"},
-	{ id:113, pId:11, name:"三级分类"},
-	{ id:114, pId:11, name:"三级分类"},
-	{ id:115, pId:11, name:"三级分类"},
-	{ id:12, pId:1, name:"二级分类 1-2"},
-	{ id:121, pId:12, name:"三级分类 1-2-1"},
-	{ id:122, pId:12, name:"三级分类 1-2-2"},
-];
-		
-var code;
-		
-function showCode(str) {
-	if (!code) code = $("#code");
-	code.empty();
-	code.append("<li>"+str+"</li>");
-}
-		
-$(document).ready(function(){
-	var t = $("#treeDemo");
-	t = $.fn.zTree.init(t, setting, zNodes);
-	demoIframe = $("#testIframe");
-	//demoIframe.on("load", loadReady);
-	var zTree = $.fn.zTree.getZTreeObj("tree");
-	//zTree.selectNode(zTree.getNodeByParam("id",'11'));
-});
-</script>
-</body>
 </html>

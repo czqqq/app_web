@@ -19,29 +19,23 @@
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>添加产品分类</title>
+<title>编辑产品分类</title>
 </head>
 <body>
 <div class="page-container">
 	<form action="" method="post" class="form form-horizontal" id="form-user-add">
+		<input type="hidden" id="productTypeId" name="productTypeId"/>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">
 				<span class="c-red">*</span>
 				分类名称：</label>
 			<div class="formControls col-xs-6 col-sm-6">
-				<input type="text" class="input-text" value="" placeholder="" id="user-name" name="product-category-name">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">备注：</label>
-			<div class="formControls col-xs-6 col-sm-6">
-				<textarea name="" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
-				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+				<input type="text" class="input-text" value="" placeholder="" id="productName" name="product-category-name">
 			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-9 col-offset-2">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+				<input class="btn btn-primary radius" id="sumbitBtn" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
 			</div>
 		</div>
 	</form>
@@ -58,8 +52,55 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
 $(function(){
-	
+	initData();
+	initEvent();
 });
+var initEvent = function () {
+	$("#sumbitBtn").bind("click",function(){
+	    var name =  $("#productTypeName").val();
+	    if(name==""){
+	        layer.msg("分类名称不能为空",{icon:2,time:2000});
+		}
+        var data = {};
+        data.name = name;
+        data.id =  $("#productTypeId").val();
+        $.ajax('/modifyProductType', {
+            method: 'POST',
+            data: {
+                productType:JSON.stringify(data)
+            },
+            dataType: 'json'
+        }).done(function(response) {
+            if(response.code == 200) {
+                layer.msg("编辑产品分类成功！" , {icon : 1, time : 2000});
+                parent.layer.close(index);
+            } else {
+                layer.msg(response.message, {icon: 2,time:2000});
+            }
+        });
+	})
+}
+var initData = function(){
+    var id = getUrlParam("id");
+    $.ajax('/api/fetchProductTypeDetail', {
+        method: 'POST',
+        data: {"productTypeId":id},
+        dataType: 'json'
+    }).done(function(response) {
+        if(response.code == 200) {
+			$("#productTypeId").val(id);
+            $("#productTypeName").val(response.data.productType.name);
+        } else {
+            layer.msg(response.message, {icon: 2,time:2000});
+        }
+    });
+}
+var getUrlParam = function(name) {
+    var reg = new RegExp("(^|[?&])" + name + "=([^&]*)(&|$)");
+    var r = _location.href.replace(/.*?[\?#](.*)/,"$1").match(reg);
+    if (r != null) return decodeURIComponent(r[2]);
+    return null;
+};
 </script>
 </body>
 </html>
