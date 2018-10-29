@@ -126,10 +126,10 @@
 					};
 					$.ajax('/api/addProductType', {
 						method: 'POST',
-						data: {
-							productType:JSON.stringify(data)	
-						},
-						dataType: 'json'
+						data: JSON.stringify(data),
+						dataType: 'json',
+						type:"post",
+						contentType:"application/json;charset=utf-8",
 					}).done(function(response) {
 						if(response.code == 200) {
 							layer.msg("添加产品分类成功！" , {icon : 1, time : 2000});
@@ -144,22 +144,25 @@
 			}
 			
 			var product_category_edit = function(id) {
-				layer_show("编辑产品类别","product-category-add.html?id="+id,50,100);
+				layer_show("编辑产品类别","product-category-add.html?id="+id,450,200);
 			}
 			var active_del = function(id) {
-				$.ajax('/api/removeProductType', {
-					method: 'POST',
-					data: {"productTypeId":id},
-					dataType: 'json'
-				}).done(function(response) {
-					if(response.code == 200) {
-						layer.msg("删除成功！" , {icon : 1, time : 2000});
-							//刷新页面
-							location.replace(location.href);
-					} else {
-						layer.msg(response.message, {icon: 2,time:2000});
-					}
-				});
+                layer.confirm('确定删除该数据吗？',function(index){
+                    $.ajax('/api/removeProductType', {
+                        method: 'POST',
+                        data: {"productTypeId":id},
+                        dataType: 'json'
+                    }).done(function(response) {
+                        if(response.code == 200) {
+                            layer.msg("删除成功！" , {icon : 1, time : 2000});
+                            //刷新页面
+                            location.replace(location.href);
+                        } else {
+                            layer.msg(response.message, {icon: 2,time:2000});
+                        }
+                    });
+                });
+
 			}
 		</script>
 	</body>
