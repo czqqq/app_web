@@ -66,17 +66,61 @@
 			});
 			var initTable = function(){
 				$('.table-sort').dataTable({
-					"ajax":{
-						"url": "/api/fetchProductType",
-						"type": "POST",
-                        //用于处理服务器端返回的数据。 dataSrc是DataTable特有的
-                        dataSrc: function (response) {
-                            if (response.code == 200) {
-                                return response.data.productTypes;
+                    serverSide: true,  //启用服务器端分页
+                    pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
+                    "ajax":function (data, callback, settings) {
+
+                        //封装请求参数
+                        var param = {};
+                        if(data){
+                            param.pageSize= data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+                            param.startIndex = data.start;//开始的记录序号
+                            param.pageIndex = (data.start / data.length)+1;//当前页码
+						}else{
+                            param.pageSize= 10;
+                            param.pageIndex = 1;
+						}
+
+                        //自定义的参数
+//                        param.type=$("select[name='type']").val();//获取要筛选的类别
+                        param.name=data.search.value;//获取要筛选的名字
+                        param.order=data.order;
+                        //ajax请求数据方法
+                        $.ajax({
+                            type: "post",
+                            url: "/api/inquireProductTypes",//url请求的地址
+                            cache: false,  //禁用缓存
+                            data: param,  //传入组装的参数
+                            dataType: "json",
+                            success: function (result) {
+
+                                //封装返回数据重要
+                                var returnData = {};
+                                //这里直接自行返回了draw计数器,应该由后台返回
+                                returnData.draw = data.draw;
+                                //返回数据全部记录
+                                returnData.recordsTotal = result.data.productTypes.total;
+                                //后台不实现过滤功能，每次查询均视作全部结果
+                                returnData.recordsFiltered = result.data.productTypes.total;
+                                //返回的数据列表
+                                returnData.data = result.data.productTypes.list;
+
+                                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                                callback(returnData);
                             }
-                        }
-					},
-                    pageLength:20,
+                        });
+                    },
+//					{
+//						"url": "/api/fetchProductType",
+//						"type": "POST",
+//                        //用于处理服务器端返回的数据。 dataSrc是DataTable特有的
+//                        dataSrc: function (response) {
+//                            if (response.code == 200) {
+//                                return response.data.productTypes;
+//                            }
+//                        }
+//					},
                     "columns": [
                         {
                             "data": "idColumn",
