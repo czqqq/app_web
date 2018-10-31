@@ -99,11 +99,11 @@
                                 //这里直接自行返回了draw计数器,应该由后台返回
                                 returnData.draw = data.draw;
                                 //返回数据全部记录
-                                returnData.recordsTotal = result.data.productTypes.total;
+                                returnData.recordsTotal = result.data.total;
                                 //后台不实现过滤功能，每次查询均视作全部结果
-                                returnData.recordsFiltered = result.data.productTypes.total;
+                                returnData.recordsFiltered = result.data.total;
                                 //返回的数据列表
-                                returnData.data = result.data.productTypes.list;
+                                returnData.data = result.data.list;
 
                                 //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
                                 //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
