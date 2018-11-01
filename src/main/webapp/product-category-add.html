@@ -99,7 +99,7 @@ var initData = function(){
     }).done(function(response) {
         if(response.code == 200) {
 			$("#productTypeId").val(id);
-            $("#productTypeName").val(response.data.productType.name);
+            $("#productTypeName").val(response.data.name);
         } else {
             layer.msg(response.message, {icon: 2,time:2000});
         }
