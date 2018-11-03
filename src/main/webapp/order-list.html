@@ -19,7 +19,7 @@
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>产品列表</title>
+<title>订单列表</title>
 <link rel="stylesheet" href="lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
 </head>
 <body class="pos-r">
@@ -39,8 +39,14 @@
 				<thead>
 					<tr class="text-c">
 						<th width="40"><input name="" type="checkbox" value=""></th>
+						<th width="100">订单号</th>
 						<th width="100">商品名称</th>
-						<th width="100">单价</th>
+						<th width="100">下单时间</th>
+						<th width="100">收件人</th>
+						<th width="100">收件地址</th>
+						<th width="100">联系方式</th>
+						<th width="100">价格</th>
+						<th width="100">状态</th>
 						<th width="100">操作</th>
 					</tr>
 				</thead>
@@ -126,11 +132,11 @@ var initTable = function(){
             //ajax请求数据方法
             $.ajax({
                 type: "post",
-                url: "/api/fetchProduct",//url请求的地址
+                url: "/api/fetchOrderWeb",//url请求的地址
                 cache: false,  //禁用缓存
                 data: param,  //传入组装的参数
                 dataType: "json",
-                contentType:"application/x-www-form-urlencoded",
+                contentType:"application/x-www-form-urlencoded;",
                 success: function (result) {
 
                     //封装返回数据重要
@@ -157,16 +163,23 @@ var initTable = function(){
                     return '<input name="id" style="text-align: center" type="checkbox" value="'+row.id+'">'
                 },
             },
-            { "data": "name" },
-            { "data": "price" },
+            { "data": "code" },
+            { "data": "op",
+                "render": function (data, type, row, meta) {
+                    return row.orderDetails[0].productName
+                }
+			},
+            { "data": "ct" },
+            { "data": "recName" },
+            { "data": "recAddress" },
+            { "data": "recMobile" },
+            { "data": "totalPrice" },
+            { "data": "status" },
             { "data": "op",
                 "render": function (data, type, row, meta) {
                     return '<a style="text-decoration:none" ' +
-                        'onClick="product_edit('+row.id+')" href="javascript:;" title="编辑">' +
-                        '<i class="Hui-iconfont">&#xe6df;</i></a> ' +
-                        '<a style="text-decoration:none" class="ml-5" onClick="active_del('+row.id+')" href="javascript:;" title="删除">' +
-                        '<i class="Hui-iconfont">&#xe6e2;</i>' +
-                        '</a>'
+                        'onClick="modifyStatus('+row.id+')" href="javascript:;" title="确定发货">' +
+                        '<i class="Hui-iconfont">&#xe6df;</i></a> '
                 }
             }
         ],
@@ -187,31 +200,8 @@ var initTable = function(){
         },
     });
 }
-
-/*产品-添加*/
-function product_add(title,url){
-    layer_show("添加产品","product-add.html",700,500);
-}
-var product_edit = function(id) {
-    layer_show("编辑产品","product-add.html?id="+id,700,500);
-}
-var active_del = function(id) {
-    layer.confirm('确定删除该数据吗？',function(index){
-        $.ajax('/api/removeProduct', {
-            method: 'POST',
-            data: {"productId":id},
-            dataType: 'json'
-        }).done(function(response) {
-            if(response.code == 200) {
-                layer.msg("删除成功！" , {icon : 1, time : 2000});
-                //刷新页面
-                location.replace(location.href);
-            } else {
-                layer.msg(response.message, {icon: 2,time:2000});
-            }
-        });
-    });
-
+var modifyStatus = function (id) {
+	
 }
 ///*产品-查看*/
 //function product_show(title,url,id){

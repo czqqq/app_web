@@ -68,10 +68,10 @@ var initEvent = function () {
         $.ajax('api/modifyProductType', {
             method: 'POST',
             method: 'POST',
-            data: JSON.stringify(data),
+            data: data,
             dataType: 'json',
             type:"post",
-            contentType:"application/json;charset=utf-8",
+            contentType:"application/x-www-form-urlencoded;charset=utf-8",
         }).done(function(response) {
             if(response.code == 200) {
                 layer.msg("编辑产品分类成功！" , {icon : 1, time : 2000});

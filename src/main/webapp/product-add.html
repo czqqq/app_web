@@ -864,10 +864,10 @@ $("#saveBtn").bind("click",function(){
     };
     $.ajax('/api/addProductType', {
         method: 'POST',
-        data: JSON.stringify(data),
+        data: data,
         dataType: 'json',
         type:"post",
-        contentType:"application/json;charset=utf-8",
+        contentType:"application/x-www-form-urlencoded;",
     }).done(function(response) {
         if(response.code == 200) {
             layer.msg("添加商品成功！" , {icon : 1, time : 2000});
@@ -945,10 +945,10 @@ var save_product = function(){
 var modifyProduct =function(product){
     $.ajax('api/modifyProduct', {
         method: 'POST',
-        data: JSON.stringify(product),
+        data: product,
         dataType: 'json',
         type:"post",
-        contentType:"application/json;charset=utf-8",
+        contentType:"application/x-www-form-urlencoded;charset=utf-8",
     }).done(function(response) {
         if(response.code == 200) {
             layer.msg("编辑产品成功！" , {icon : 1, time : 2000});
@@ -963,10 +963,10 @@ var modifyProduct =function(product){
 var addProduct =function(product){
     $.ajax('api/addProduct', {
         method: 'POST',
-        data: JSON.stringify(product),
+        data: product,
         dataType: 'json',
         type:"post",
-        contentType:"application/json;charset=utf-8",
+        contentType:"application/x-www-form-urlencoded;",
     }).done(function(response) {
         if(response.code == 200) {
             layer.msg("添加产品成功！" , {icon : 1, time : 2000});
