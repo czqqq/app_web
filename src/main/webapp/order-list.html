@@ -42,6 +42,7 @@
 						<th width="100">订单号</th>
 						<th width="100">商品名称</th>
 						<th width="100">下单时间</th>
+						<th width="100">下单人</th>
 						<th width="100">收件人</th>
 						<th width="100">收件地址</th>
 						<th width="100">联系方式</th>
@@ -169,17 +170,34 @@ var initTable = function(){
                     return row.orderDetails[0].productName
                 }
 			},
-            { "data": "ct" },
+            { "data": "ct" ,
+                "render": function (data, type, row, meta) {
+                    return row.ct.substring(0,16);
+                }
+			},
+            { "data": "userName" },
             { "data": "recName" },
             { "data": "recAddress" },
             { "data": "recMobile" },
             { "data": "totalPrice" },
-            { "data": "status" },
+            { "data": "status" ,
+                "render": function (data, type, row, meta) {
+                	if(row.status == "0"){
+						return "待支付";
+					}else if(row.status=="1"){
+						return "支付成功";
+					}else if(row.status=="2"){
+						return "已发货";
+                    }else{
+						return "未知";
+					}
+                }
+			},
             { "data": "op",
                 "render": function (data, type, row, meta) {
                     return '<a style="text-decoration:none" ' +
-                        'onClick="modifyStatus('+row.id+')" href="javascript:;" title="确定发货">' +
-                        '<i class="Hui-iconfont">&#xe6df;</i></a> '
+                        'onClick="modifyStatus('+row.id+','+row.status+')" href="javascript:;" title="确定发货">' +
+                        '<i class="Hui-iconfont">&#xe6a7;</i></a> '
                 }
             }
         ],
@@ -200,8 +218,29 @@ var initTable = function(){
         },
     });
 }
-var modifyStatus = function (id) {
-	
+var modifyStatus = function (id,status) {
+    if(status=="3")return;
+    layer.confirm('确定变更为已发货吗？',function(index){
+        var product = {};
+        product.id = id;
+        product.status = 2;
+        $.ajax('api/modifyOrder', {
+            method: 'POST',
+            data: product,
+            dataType: 'json',
+            type:"post",
+            contentType:"application/x-www-form-urlencoded;charset=utf-8",
+        }).done(function(response) {
+            if(response.code == 200) {
+                layer.msg("修改成功！" , {icon : 1, time : 2000});
+                //刷新页面
+                location.replace(location.href);
+            } else {
+                layer.msg(response.message, {icon: 2,time:2000});
+            }
+        });
+    });
+
 }
 ///*产品-查看*/
 //function product_show(title,url,id){
