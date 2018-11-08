@@ -19,24 +19,20 @@
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>提现申请列表</title>
+<title>佣金明细</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 提现申请列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-hover table-bg table-sort">
 		<thead>
-			<tr class="text-c">
-				<th width="40">ID</th>
-				<th width="60">用户名</th>
-				<th width="60">转账方式</th>
-				<th width="120">转账账号</th>
-				<th width="120">联系方式</th>
-				<th width="120">提现金额</th>
-				<th width="40">操作</th>
-			</tr>
+        <tr class="text-c">
+            <th width="40">ID</th>
+            <th width="120">佣金金额</th>
+            <th width="120">产生时间</th>
+            <th>备注</th>
+        </tr>
 		</thead>
 
 	</table>
@@ -62,22 +58,23 @@ $(function(){
         pageLength: 10,
         pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
         ajax: {
-            url: "/api/fetchWithdrawList",
-            type: "POST"
+            url: "/api/fetchCommissionDetail",
+            type: "POST",
+            data:{
+                userId: getUrlParam("userId")
+            }
         },
         columns: [
             {data: 'id'},
-            {data: 'userName'},
-            {data: 'type'},
-            {data: 'account'},
-            {data: 'mobile'},
-            {data: 'money'},
-            {data: null, render:function (data) {
-					return  '<td class="td-manage">' +
-						'<a title="已经处理" href="javascript:;" onclick="finishCommission('+data.id+')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6a7;</i></a> ' +
-						'<a title="查看明细" href="javascript:;" onclick="showDetail('+data.userId+')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe667;</i></a> ' +
-						'</td>'
-                }}
+            {data: 'commission'},
+            {data: 'ct',render:function (val) {
+                    if(val){
+                        val = val.replace('T',' ').substr(0,19)
+                    }
+                    return val;
+                }},
+            {data: 'mark'}
+
         ],
         createdRow: function (row) {
             row.classList.add("text-c")
@@ -86,27 +83,12 @@ $(function(){
 	
 });
 
-function finishCommission(id) {
-
-    $.ajax({
-        type: 'POST',
-        url: '/api/finishWithdraw',
-        dataType: 'json',
-        data:{id:id},
-        success: function(data){
-            layer.msg('处理成功!',{icon: 1,time:1000});
-            table && table.fnUpdate();
-        },
-        error:function(data) {
-            console.log(data.msg);
-        }
-    });
-
-}
-
-function showDetail(userId) {
-    layer_show('佣金明细','commission-detail.html?userId='+userId,800,500);
-}
+    var getUrlParam = function(name) {
+        var reg = new RegExp("(^|[?&])" + name + "=([^&]*)(&|$)");
+        var r = location.href.replace(/.*?[\?#](.*)/,"$1").match(reg);
+        if (r != null) return decodeURIComponent(r[2]);
+        return null;
+    };
 
 </script> 
 </body>

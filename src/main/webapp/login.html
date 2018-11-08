@@ -29,13 +29,13 @@
       <div class="row cl">
         <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
         <div class="formControls col-xs-8">
-          <input id="userName" name="userName" type="text" placeholder="账户" class="input-text size-L">
+          <input required id="userName" name="userName" type="text"  placeholder="账户" class="input-text size-L">
         </div>
       </div>
       <div class="row cl">
         <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
         <div class="formControls col-xs-8">
-          <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
+          <input required id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
         </div>
       </div>
 
@@ -56,9 +56,13 @@
     </form>
   </div>
 </div>
-<div class="footer">Copyright </div>
+<div class="footer">Copyright 祥樽贸易有限公司</div>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/additional-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
     //登录
     function login() {
@@ -66,11 +70,11 @@
         var password = $('#password').val();
         $.ajax({
             type: 'POST',
-            url: '',
+            url: '/api/login',
             dataType: 'json',
             data:{
-                userName: userName,
-                password: password
+                mobile: userName,
+                pwd: password
             },
             success: function (data) {
                 //储存token
@@ -79,8 +83,7 @@
                 document.location.href = '/index.html';
             },
             error: function (data) {
-                document.location.href = '/index.html'; //todo
-                console.log(data.msg);
+                $.Huimodalalert('用户名或密码错误！',3000);
             }
         });
     }
