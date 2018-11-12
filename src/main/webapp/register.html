@@ -97,16 +97,16 @@ $(function(){
             },
             mobile:{
                 required:true,
-                isMobile:true,
+                isMobile:true
             },
             pwd:{
                 required:true,
-                minlength:10,
+                minlength:6,
                 maxlength:20
             },
             confirmPwd:{
                 required:true,
-                minlength:10,
+                minlength:6,
                 maxlength:20
             },
 
@@ -135,7 +135,7 @@ $(function(){
                 if(response.code == 200) {
                     layer.msg("注册成功！" , {icon : 1, time : 2000});
                     //跳转下载页面
-                    location.replace(location.href);
+                    location.replace("download.html");
                 } else {
                     layer.msg(response.message, {icon: 2,time:2000});
                 }
