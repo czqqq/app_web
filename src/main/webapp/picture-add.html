@@ -33,7 +33,7 @@
 					<div class="queueList">
 						<div id="dndArea" class="placeholder">
 							<div id="filePicker-2"></div>
-							<p>或将照片拖到这里，单次最多可选300张</p>
+							<p>或将照片拖到这里，单次最多可选6张</p>
 						</div>
 					</div>
 					<div class="statusBar" style="display:none;">
@@ -82,7 +82,7 @@ $(function(){
 	
 	$list = $("#fileList"),
 	$btn = $("#btn-star"),
-	state = "pending",
+	state = "pending"
 	uploader;
 
 	var uploader = WebUploader.create({
