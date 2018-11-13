@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="lib/downloadPage/css/main.css">
     <link rel="stylesheet" href="lib/downloadPage/css/animate.css">
     <link rel="stylesheet" href="lib/downloadPage/css/responsive.css">
-    <script src="js/wow.min.js"></script>
+    <script src="lib/downloadPage/js/wow.min.js"></script>
     <script>
         new WOW(
         ).init();
@@ -25,18 +25,27 @@
         <div class="row">
             <div class="col-md-12 col-md-offset-1 col-sm-12">
                 <div class="block">
-                    <h1>
-                        下载天磊商城
-                    </h1>
+                    <h3>
+                        扫一扫
+                    </h3>
+                    <p>
+                        下载天磊商城!
+                    </p>
 
                     <ul class="download-btn">
                         <li>
-                            <a href="https://www.pgyer.com/CEyT?sig=fIJ1xMMYUcZ9dHDNpQEYFnei7%2FUueXhLcpACbn9WHfBxaG5rWhZQesimuWXm630p" class="btn btn-default btn-apple"> <i class="fa fa-apple"></i>苹果版本</a>
+                            <!--<a href="https://www.pgyer.com/CEyT?sig=fIJ1xMMYUcZ9dHDNpQEYFnei7%2FUueXhLcpACbn9WHfBxaG5rWhZQesimuWXm630p" class="btn btn-default btn-apple"> <i class="fa fa-apple"></i>苹果版本</a>-->
+                            <a href="javascript:clickbtn('ios');" class="btn btn-default btn-apple"> <i class="fa fa-apple"></i>苹果版本</a>
                         </li>
                         <li>
-                            <a href="#" class="btn btn-default btn-andriod"><i class="fa fa-android"></i>安卓版本</a>
+                            <a href="javascript:clickbtn('android');" class="btn btn-default btn-andriod"><i class="fa fa-android"></i>安卓版本</a>
                         </li>
                     </ul>
+
+                        <div class="col-sm-offset-2 col-sm-8">
+                            <img id="downloadPic" class="app-img img-responsive" src="" alt="">
+                        </div>
+
 
 
                 </div>
@@ -46,8 +55,8 @@
 </section>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript">
-    function f() {
-        
+    function clickbtn(type) {
+        $('#downloadPic').attr('src', 'pic/download/'+ type+'.png');
     }
 </script>
 </body>
