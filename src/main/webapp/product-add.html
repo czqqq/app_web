@@ -932,8 +932,8 @@ var save_product = function(){
     $(".sizeDiv input").each(function(){
         size +=$(this).val()+","
     });
-    color.substring(0,color.length-1);
-    size.substring(0,size.length-1);
+    color = color.substring(0,color.length-1);
+    size = size.substring(0,size.length-1);
 	product.color = color;
     product.size = size;
     product.remark = $("#remark").val();
