@@ -828,6 +828,16 @@ var initData = function(){
                 $("#productType").val(product.type);
                 $("#price").val(product.price);
                 $("#remark").val(product.remark);
+                $("#pic").val(product.pic);
+                if(product.pic!=""&&product.pic!=null){
+                    var $li = $(
+						'<div  class="item">' +
+						'<div class="pic-box"><img></div>'+
+						'<div class="info">' + product.pic + '</div>' +
+						'</div>'
+                     );
+                    $list.append( $li );
+				}
                 $(".colorDiv").empty();
                 $(".sizeDiv").empty();
                 if(product.color!=null&&product.color!=""){
