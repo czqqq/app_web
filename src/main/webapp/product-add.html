@@ -828,12 +828,11 @@ var initData = function(){
                 $("#productType").val(product.type);
                 $("#price").val(product.price);
                 $("#remark").val(product.remark);
-                $("#pic").val(product.pic);
+                $("#pic").val(product.pic.substring(product.pic.lastIndexOf("/")+1,product.pic.length));
                 if(product.pic!=""&&product.pic!=null){
                     var $li = $(
 						'<div  class="item">' +
-						'<div class="pic-box"><img></div>'+
-						'<div class="info">' + product.pic + '</div>' +
+						'<div class="pic-box" style="width: 150px;height: 150px;"><img src="'+product.pic+'" style="width: 100%;height: 100%;"></div>'+
 						'</div>'
                      );
                     $list.append( $li );
