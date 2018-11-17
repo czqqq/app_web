@@ -24,11 +24,34 @@
 <body>
 <div class="page-container">
 	<p class="f-20 text-success">欢迎登录！</p>
+	<p id="allOutPut"></p>
+	<p id="allinPut"></p>
+	<p id="allPrine"></p>
 
 </div>
 
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
-
+<script type="text/javascript">
+    fetcinoutPut();
+    function fetcinoutPut(){
+        $.ajax({
+            type: 'POST',
+            url: '/api/fetcinoutPut',
+            dataType: 'json',
+            data:{},
+            success: function(data){
+                var input = parseFloat(data.data.inPut).toFixed(2);
+                var output = parseFloat(data.data.outPut).toFixed(2);
+                $('#allOutPut').html('总出账：'+output + '元');
+                $('#allinPut').html('总入账：'+ input+ '元');
+                $('#allPrine').html('总盈利：'+ (input - output )+ '元');
+            },
+            error:function(data) {
+                console.log(data.msg);
+            }
+        });
+    }
+</script>
 </body>
 </html>

@@ -24,16 +24,21 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 提现申请列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+    <span class="">今日出账：<strong id="todayOut"></strong> 元</span>
+    </div>
 
 	<div class="mt-20">
+
 	<table class="table table-border table-bordered table-hover table-bg table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="40">ID</th>
-				<th width="60">用户名</th>
+				<th width="60">申请用户</th>
 				<th width="60">转账方式</th>
 				<th width="120">转账账号</th>
 				<th width="120">联系方式</th>
+				<th width="120">收款人姓名</th>
 				<th width="120">提现金额</th>
 				<th width="40">操作</th>
 			</tr>
@@ -55,6 +60,9 @@
 <script type="text/javascript">
     var table;
 $(function(){
+
+    getOutPut();
+
 	table = $('.table-sort').dataTable({
         serverSide: true,  //启用服务器端分页
         searching: false,
@@ -62,7 +70,7 @@ $(function(){
         pageLength: 10,
         pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
         ajax: {
-            url: "/api/fetchWithdrawList",
+            url: "/api/fetchWithdrawListWeb",
             type: "POST"
         },
         columns: [
@@ -71,6 +79,7 @@ $(function(){
             {data: 'type'},
             {data: 'account'},
             {data: 'mobile'},
+            {data: 'name'},
             {data: 'money'},
             {data: null, render:function (data) {
 					return  '<td class="td-manage">' +
@@ -96,6 +105,7 @@ function finishCommission(id) {
         success: function(data){
             layer.msg('处理成功!',{icon: 1,time:1000});
             table && table.fnUpdate();
+            getOutPut();
         },
         error:function(data) {
             console.log(data.msg);
@@ -107,6 +117,22 @@ function finishCommission(id) {
 function showDetail(userId) {
     layer_show('佣金明细','commission-detail.html?userId='+userId,800,500);
 }
+
+function getOutPut() {
+    $.ajax({
+        type: 'POST',
+        url: '/api/fetchOutPut',
+        dataType: 'json',
+        data:{},
+        success: function(data){
+            $('#todayOut').html(data.data);
+        },
+        error:function(data) {
+            console.log(data.msg);
+        }
+    });
+}
+
 
 </script> 
 </body>
